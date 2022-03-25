@@ -24,7 +24,7 @@ public class CheckProductOwnershipAspect {
 
     private final ProductOwnershipUseCase productOwnershipUseCase;
 
-    @Around("@annotation(com.github.ricbau.vendingmachine.api.aspects.ProductUpdateAllowed)")
+    @Around("@annotation(CheckProductOwnership)")
     public Object measureAndLogTime(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
 
         String username = Optional.ofNullable(SecurityContextHolder.getContext())
