@@ -27,3 +27,25 @@ databaseChangeLog:
                     nullable: false
                   name: cost_in_cents
                   type: integer
+        - createIndex:
+            columns:
+              - column:
+                  name: product_name
+            indexName: idx_products_product_name
+            unique: true
+            tableName: products
+        - createTable:
+            tableName: product_sellers
+            columns:
+              - column:
+                  constraints:
+                    foreignKeyName: fk_product_seller_product_id
+                    references: products(id)
+                    nullable: true
+                  name: product_id
+                  type: varchar(100)
+              - column:
+                  constraints:
+                    nullable: true
+                  name: seller_id
+                  type: varchar(100)

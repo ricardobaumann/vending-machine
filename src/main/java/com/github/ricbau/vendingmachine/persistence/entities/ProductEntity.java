@@ -5,10 +5,14 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -28,4 +32,10 @@ public class ProductEntity {
 
     @Column(name = "cost_in_cents")
     private Integer costInCents;
+
+    @ElementCollection
+    @CollectionTable(name = "product_sellers",
+            joinColumns = @JoinColumn(name = "product_id"))
+    @Column(name = "seller_id")
+    private List<String> sellerIds;
 }
