@@ -1,6 +1,7 @@
 package com.github.ricbau.vendingmachine.domain.services;
 
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
+import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.CreateProductPayload;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.exceptions.CreateProductException;
 import com.github.ricbau.vendingmachine.domain.mappers.ProductCommandMapperImpl;
@@ -32,7 +33,7 @@ class CreateProductServiceTest {
     private CreateProductService createProductService;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
-    
+
     @Test
     @DisplayName("the input command should be mapped and persisted")
     void create() {
@@ -43,8 +44,11 @@ class CreateProductServiceTest {
         //When //Then
         assertThat(createProductService.create(
                 new CreateProductCommand(
-                        "test-product",
-                        1, 2, Arrays.asList("seller1", "seller2")
+                        new CreateProductPayload(
+                                "test-product",
+                                1, 2, Arrays.asList("seller1", "seller2")
+                        ),
+                        "user"
                 )
         ).get()).hasNoNullFieldsOrProperties();
 
@@ -66,8 +70,10 @@ class CreateProductServiceTest {
         //When //Then
         assertThat(createProductService.create(
                 new CreateProductCommand(
-                        "test-product",
-                        1, 2, Arrays.asList("seller1", "seller2")
+                        new CreateProductPayload(
+                                "test-product",
+                                1, 2, Arrays.asList("seller1", "seller2")),
+                        "user"
                 )
         ).getLeft())
                 .isInstanceOf(CreateProductException.class)

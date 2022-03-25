@@ -37,7 +37,8 @@ class ProductCrudPortImplPersistTest {
         //Given
         Product product = new Product(
                 "100", "test-product",
-                1, 1, Arrays.asList("seller1", "seller2")
+                1, 1, Arrays.asList("seller1", "seller2"),
+                "user"
         );
         productCrudPort.persist(
                 product

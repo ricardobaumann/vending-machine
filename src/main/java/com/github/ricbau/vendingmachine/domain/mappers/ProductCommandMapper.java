@@ -8,5 +8,7 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface ProductCommandMapper {
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
+    @Mapping(target = "owner", source = "username")
+    @Mapping(target = ".", source = "payload")
     Product toProduct(CreateProductCommand createProductCommand);
 }

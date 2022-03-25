@@ -10,8 +10,14 @@ import java.util.List;
 
 @Value
 public class CreateProductCommand {
-    @NotBlank String productName;
-    @NotNull @Min(1) Integer amountAvailable;
-    @NotNull @Min(1) Integer costInCents;
-    @NotNull @Size(min = 1) List<String> sellerIds;
+    CreateProductPayload payload;
+    String username;
+
+    @Value
+    public static class CreateProductPayload {
+        @NotBlank String productName;
+        @NotNull @Min(1) Integer amountAvailable;
+        @NotNull @Min(1) Integer costInCents;
+        @NotNull @Size(min = 1) List<String> sellerIds;
+    }
 }

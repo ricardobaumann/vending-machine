@@ -3,6 +3,7 @@ package com.github.ricbau.vendingmachine.api.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ricbau.vendingmachine.api.controllers.mappers.ProductResultMapperImpl;
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
+import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.CreateProductPayload;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateProductUseCase;
 import io.vavr.control.Either;
@@ -42,16 +43,20 @@ class CreateProductControllerCreateTest {
     @DisplayName("it should create and return the id and location if successful")
     void create() throws Exception {
         //Given
-        CreateProductCommand createProductCommand = new CreateProductCommand(
+        CreateProductPayload createProductPayload = new CreateProductPayload(
                 "test-product",
                 1, 1, Arrays.asList("seller1", "seller2")
+        );
+        CreateProductCommand createProductCommand = new CreateProductCommand(
+                createProductPayload, "user"
         );
         when(createProductUseCase.create(
                 createProductCommand
         )).thenReturn(
                 Either.right(new Product(
                         "100", "test-product",
-                        1, 1, Arrays.asList("seller1", "seller2")
+                        1, 1, Arrays.asList("seller1", "seller2"),
+                        "user"
                 )));
 
         //When //Then
@@ -59,7 +64,7 @@ class CreateProductControllerCreateTest {
                         post("/products")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(createProductCommand))
+                                .content(objectMapper.writeValueAsString(createProductPayload))
                 ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is("100")))
                 .andExpect(jsonPath("$.location", is("http://localhost/products/100")));

@@ -27,11 +27,16 @@ databaseChangeLog:
                     nullable: false
                   name: cost_in_cents
                   type: integer
+              - column:
+                  constraints:
+                    nullable: false
+                  name: owner_id
+                  type: varchar(100)
         - createIndex:
             columns:
               - column:
                   name: product_name
-            indexName: idx_products_product_name
+            indexName: uk_products_product_name
             unique: true
             tableName: products
         - createTable:

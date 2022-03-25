@@ -38,4 +38,7 @@ public class ProductEntity {
             joinColumns = @JoinColumn(name = "product_id"))
     @Column(name = "seller_id")
     private List<String> sellerIds;
+
+    @Column(name = "owner_id")
+    private String owner;
 }

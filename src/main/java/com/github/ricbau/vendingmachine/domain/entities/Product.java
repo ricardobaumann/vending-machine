@@ -11,4 +11,5 @@ public class Product {
     Integer amountAvailable;
     Integer costInCents;
     List<String> sellerIds;
+    String owner;
 }
