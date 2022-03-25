@@ -4,6 +4,7 @@ import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.ports.ProductCrudPort;
 import com.github.ricbau.vendingmachine.persistence.mappers.ProductEntityMapper;
 import com.github.ricbau.vendingmachine.persistence.repositories.ProductRepo;
+import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -15,7 +16,7 @@ public class ProductCrudPortImpl implements ProductCrudPort {
     private final ProductEntityMapper productEntityMapper;
 
     @Override
-    public void persist(Product product) {
-        productRepo.save(productEntityMapper.toEntity(product));
+    public Try<Void> persist(Product product) {
+        return Try.run(() -> productRepo.save(productEntityMapper.toEntity(product)));
     }
 }
