@@ -1,9 +1,9 @@
 package com.github.ricbau.vendingmachine.api.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.github.ricbau.vendingmachine.api.controllers.mappers.ProductResultMapperImpl;
+import com.github.ricbau.vendingmachine.api.controllers.mappers.CreateResultMapperImpl;
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
-import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.CreateProductPayload;
+import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.WriteProductPayload;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateProductUseCase;
 import io.vavr.control.Either;
@@ -34,7 +34,7 @@ class CreateProductControllerCreateTest {
     @MockBean
     private CreateProductUseCase createProductUseCase;
     @SpyBean
-    private ProductResultMapperImpl productResultMapper;
+    private CreateResultMapperImpl productResultMapper;
     @Autowired
     private ObjectMapper objectMapper;
 
@@ -43,12 +43,12 @@ class CreateProductControllerCreateTest {
     @DisplayName("it should create and return the id and location if successful")
     void create() throws Exception {
         //Given
-        CreateProductPayload createProductPayload = new CreateProductPayload(
+        WriteProductPayload writeProductPayload = new WriteProductPayload(
                 "test-product",
                 1, 1, Arrays.asList("seller1", "seller2")
         );
         CreateProductCommand createProductCommand = new CreateProductCommand(
-                createProductPayload, "user"
+                writeProductPayload, "user"
         );
         when(createProductUseCase.create(
                 createProductCommand
@@ -64,7 +64,7 @@ class CreateProductControllerCreateTest {
                         post("/products")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .content(objectMapper.writeValueAsString(createProductPayload))
+                                .content(objectMapper.writeValueAsString(writeProductPayload))
                 ).andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", is("100")))
                 .andExpect(jsonPath("$.location", is("http://localhost/products/100")));

@@ -8,6 +8,8 @@ import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 @AllArgsConstructor
 public class ProductCrudPortImpl implements ProductCrudPort {
@@ -18,5 +20,11 @@ public class ProductCrudPortImpl implements ProductCrudPort {
     @Override
     public Try<Void> persist(Product product) {
         return Try.run(() -> productRepo.save(productEntityMapper.toEntity(product)));
+    }
+
+    @Override
+    public Optional<Product> findByID(String productId) {
+        return productRepo.findById(productId)
+                .map(productEntityMapper::toProduct);
     }
 }

@@ -1,7 +1,7 @@
 package com.github.ricbau.vendingmachine.domain.services;
 
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
-import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.CreateProductPayload;
+import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.WriteProductPayload;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.exceptions.CreateProductException;
 import com.github.ricbau.vendingmachine.domain.mappers.ProductCommandMapperImpl;
@@ -24,13 +24,13 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("When a product is being created")
 @ExtendWith(MockitoExtension.class)
-class CreateProductServiceTest {
+class PersistProductServiceCreateTest {
     @Mock
     private ProductCrudPort productCrudPort;
     @Spy
     private ProductCommandMapperImpl productCommandMapper;
     @InjectMocks
-    private CreateProductService createProductService;
+    private PersistProductService persistProductService;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
 
@@ -42,9 +42,9 @@ class CreateProductServiceTest {
                 .thenReturn(Try.of(() -> null));
 
         //When //Then
-        assertThat(createProductService.create(
+        assertThat(persistProductService.create(
                 new CreateProductCommand(
-                        new CreateProductPayload(
+                        new WriteProductPayload(
                                 "test-product",
                                 1, 2, Arrays.asList("seller1", "seller2")
                         ),
@@ -68,9 +68,9 @@ class CreateProductServiceTest {
         doThrow(RuntimeException.class).when(productCrudPort).persist(any());
 
         //When //Then
-        assertThat(createProductService.create(
+        assertThat(persistProductService.create(
                 new CreateProductCommand(
-                        new CreateProductPayload(
+                        new WriteProductPayload(
                                 "test-product",
                                 1, 2, Arrays.asList("seller1", "seller2")),
                         "user"

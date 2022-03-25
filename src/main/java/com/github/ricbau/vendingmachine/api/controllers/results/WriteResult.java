@@ -5,7 +5,7 @@ import lombok.Value;
 import java.net.URI;
 
 @Value
-public class CreateProductResult {
+public class WriteResult {
     String id;
     URI location;
 }

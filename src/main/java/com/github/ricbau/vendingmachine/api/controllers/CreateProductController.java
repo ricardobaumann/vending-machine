@@ -1,9 +1,8 @@
 package com.github.ricbau.vendingmachine.api.controllers;
 
-import com.github.ricbau.vendingmachine.api.controllers.mappers.ProductResultMapper;
-import com.github.ricbau.vendingmachine.api.controllers.results.CreateProductResult;
+import com.github.ricbau.vendingmachine.api.controllers.mappers.CreateResultMapper;
+import com.github.ricbau.vendingmachine.api.controllers.results.WriteResult;
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
-import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand.CreateProductPayload;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateProductUseCase;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -23,19 +22,19 @@ import java.util.function.Function;
 public class CreateProductController {
 
     private final CreateProductUseCase createProductUseCase;
-    private final ProductResultMapper productResultMapper;
+    private final CreateResultMapper createResultMapper;
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public CreateProductResult create(@RequestBody @Valid CreateProductPayload createProductPayload,
-                                      Principal principal) {
+    public WriteResult create(@RequestBody @Valid CreateProductCommand.WriteProductPayload writeProductPayload,
+                              Principal principal) {
         return createProductUseCase.create(
                         new CreateProductCommand(
-                                createProductPayload,
+                                writeProductPayload,
                                 principal.getName()
                         )
                 )
-                .map(productResultMapper::toResult)
+                .map(createResultMapper::toResult)
                 .getOrElseThrow(Function.identity());
     }
 
