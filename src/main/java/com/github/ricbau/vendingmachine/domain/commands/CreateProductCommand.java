@@ -10,11 +10,11 @@ import java.util.List;
 
 @Value
 public class CreateProductCommand {
-    CreateProductPayload payload;
+    WriteProductPayload payload;
     String username;
 
     @Value
-    public static class CreateProductPayload {
+    public static class WriteProductPayload {
         @NotBlank String productName;
         @NotNull @Min(1) Integer amountAvailable;
         @NotNull @Min(1) Integer costInCents;
