@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-zones-tenants-table
+      author: ricardo.baumann
+      changes:
+        - createTable:
+            tableName: products
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: varchar(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: product_name
+                  type: varchar(200)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: amount_available
+                  type: integer
+              - column:
+                  constraints:
+                    nullable: false
+                  name: cost_in_cents
+                  type: integer
