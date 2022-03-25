@@ -16,7 +16,7 @@ public class CreateProductCommand {
     @Value
     public static class WriteProductPayload {
         @NotBlank String productName;
-        @NotNull @Min(1) Integer amountAvailable;
+        @NotNull @Min(0) Integer amountAvailable;
         @NotNull @Min(1) Integer costInCents;
         @NotNull @Size(min = 1) List<String> sellerIds;
     }

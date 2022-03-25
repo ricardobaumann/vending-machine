@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("When a product is being created")
 @ExtendWith(MockitoExtension.class)
-class PersistProductServiceTest {
+class PersistProductServiceCreateTest {
     @Mock
     private ProductCrudPort productCrudPort;
     @Spy

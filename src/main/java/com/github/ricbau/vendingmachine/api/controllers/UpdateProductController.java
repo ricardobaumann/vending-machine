@@ -20,6 +20,7 @@ import java.util.function.Function;
 
 @RestController
 @AllArgsConstructor
+@CheckProductOwnership
 @RequestMapping("/products/{id}")
 public class UpdateProductController {
 
@@ -27,7 +28,6 @@ public class UpdateProductController {
     private final UpdateResultMapper resultMapper;
 
     @PutMapping
-    @CheckProductOwnership
     public WriteResult put(@RequestBody @Valid WriteProductPayload writeProductPayload,
                            @PathVariable String id,
                            Principal principal) {
