@@ -27,4 +27,9 @@ public class ProductCrudPortImpl implements ProductCrudPort {
         return productRepo.findById(productId)
                 .map(productEntityMapper::toProduct);
     }
+
+    @Override
+    public Try<Void> delete(String id) {
+        return Try.run(() -> productRepo.deleteById(id));
+    }
 }

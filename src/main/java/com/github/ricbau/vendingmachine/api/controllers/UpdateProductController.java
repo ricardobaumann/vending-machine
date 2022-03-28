@@ -1,6 +1,6 @@
 package com.github.ricbau.vendingmachine.api.controllers;
 
-import com.github.ricbau.vendingmachine.api.aspects.CheckProductOwnership;
+import com.github.ricbau.vendingmachine.api.aspects.CheckProductPermissions;
 import com.github.ricbau.vendingmachine.api.controllers.mappers.UpdateResultMapper;
 import com.github.ricbau.vendingmachine.api.controllers.results.WriteResult;
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
@@ -20,7 +20,7 @@ import java.util.function.Function;
 
 @RestController
 @AllArgsConstructor
-@CheckProductOwnership
+@CheckProductPermissions
 @RequestMapping("/products/{id}")
 public class UpdateProductController {
 

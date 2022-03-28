@@ -4,10 +4,12 @@ import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
 import com.github.ricbau.vendingmachine.domain.commands.UpdateProductCommand;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.exceptions.CreateProductException;
+import com.github.ricbau.vendingmachine.domain.exceptions.DeleteProductException;
 import com.github.ricbau.vendingmachine.domain.exceptions.UpdateProductException;
 import com.github.ricbau.vendingmachine.domain.mappers.ProductCommandMapper;
 import com.github.ricbau.vendingmachine.domain.ports.ProductCrudPort;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateProductUseCase;
+import com.github.ricbau.vendingmachine.domain.usecases.DeleteProductUseCase;
 import com.github.ricbau.vendingmachine.domain.usecases.UpdateProductUseCase;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
@@ -17,7 +19,7 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class PersistProductService implements CreateProductUseCase,
-        UpdateProductUseCase {
+        UpdateProductUseCase, DeleteProductUseCase {
 
     private final ProductCrudPort productCrudPort;
     private final ProductCommandMapper productCommandMapper;
@@ -36,5 +38,12 @@ public class PersistProductService implements CreateProductUseCase,
                 .andThenTry(productCrudPort::persist)
                 .toEither()
                 .mapLeft(UpdateProductException::new);
+    }
+
+    @Override
+    public Either<DeleteProductException, Void> delete(String id) {
+        return productCrudPort.delete(id)
+                .toEither()
+                .mapLeft(DeleteProductException::new);
     }
 }
