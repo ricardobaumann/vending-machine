@@ -4,7 +4,7 @@ databaseChangeLog:
       author: ricardo.baumann
       changes:
         - createTable:
-            tableName: products
+            tableName: vending_users
             columns:
               - column:
                   constraints:
@@ -15,48 +15,43 @@ databaseChangeLog:
               - column:
                   constraints:
                     nullable: false
-                  name: product_name
+                  name: username
                   type: varchar(200)
               - column:
                   constraints:
                     nullable: false
-                  name: amount_available
-                  type: integer
+                  name: password
+                  type: varchar(200)
               - column:
                   constraints:
                     nullable: false
-                  name: cost_in_cents
+                  name: balance_in_cents
                   type: integer
-              - column:
-                  constraints:
-                    nullable: false
-                  name: owner_id
-                  type: varchar(100)
         - createIndex:
             columns:
               - column:
-                  name: product_name
-            indexName: uk_products_product_name
+                  name: username
+            indexName: uk_users_username
             unique: true
-            tableName: products
+            tableName: vending_users
         - createTable:
-            tableName: product_sellers
+            tableName: users_roles
             columns:
               - column:
                   constraints:
-                    foreignKeyName: fk_product_seller_product_id
-                    references: products(id)
+                    foreignKeyName: fk_user_role
+                    references: vending_users(id)
                     nullable: false
-                  name: product_id
+                  name: user_id
                   type: varchar(100)
               - column:
                   constraints:
                     nullable: false
-                  name: seller_id
+                  name: role
                   type: varchar(100)
         - createIndex:
             columns:
               - column:
-                  name: product_id
-            indexName: ids_products_sellers_product_id
-            tableName: product_sellers
+                  name: user_id
+            indexName: ids_users_roles_user_id
+            tableName: vending_users
