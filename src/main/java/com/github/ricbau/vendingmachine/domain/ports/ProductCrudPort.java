@@ -9,4 +9,6 @@ public interface ProductCrudPort {
     Try<Void> persist(Product product);
 
     Optional<Product> findByID(String productId);
+
+    Try<Void> delete(String id);
 }
