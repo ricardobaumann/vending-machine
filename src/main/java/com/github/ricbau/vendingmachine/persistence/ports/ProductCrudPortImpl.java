@@ -8,7 +8,10 @@ import io.vavr.control.Try;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Repository
 @AllArgsConstructor
@@ -31,5 +34,18 @@ public class ProductCrudPortImpl implements ProductCrudPort {
     @Override
     public Try<Void> delete(String id) {
         return Try.run(() -> productRepo.deleteById(id));
+    }
+
+    @Override
+    public Optional<Product> findById(String id) {
+        return productRepo.findById(id)
+                .map(productEntityMapper::toProduct);
+    }
+
+    @Override
+    public List<Product> getAll() {
+        return StreamSupport.stream(productRepo.findAll().spliterator(), false)
+                .map(productEntityMapper::toProduct)
+                .collect(Collectors.toList());
     }
 }
