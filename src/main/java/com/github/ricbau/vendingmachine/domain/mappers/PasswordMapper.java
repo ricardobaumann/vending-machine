@@ -1,0 +1,24 @@
+package com.github.ricbau.vendingmachine.domain.mappers;
+
+import com.github.ricbau.vendingmachine.api.security.PasswordHandler;
+import com.github.ricbau.vendingmachine.domain.entities.Password;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
+
+@Slf4j
+@Component
+@AllArgsConstructor
+@SuppressWarnings("unused")
+public class PasswordMapper {
+
+    private final PasswordHandler passwordHandler;
+
+    public Password encrypt(String password) {
+        log.info("Encoding password: {}", password);
+        return new Password(
+                passwordHandler.encode(password)
+        );
+    }
+
+}

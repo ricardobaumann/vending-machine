@@ -5,7 +5,7 @@ import com.github.ricbau.vendingmachine.domain.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = PasswordMapper.class)
 public interface UserCommandMapper {
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
     @Mapping(target = "balanceInCents", constant = "0")

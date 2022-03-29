@@ -3,11 +3,11 @@ package com.github.ricbau.vendingmachine.api.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.ricbau.vendingmachine.api.controllers.mappers.CreateResultMapperImpl;
 import com.github.ricbau.vendingmachine.domain.commands.CreateUserCommand;
+import com.github.ricbau.vendingmachine.domain.entities.Password;
 import com.github.ricbau.vendingmachine.domain.entities.User;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateUserUseCase;
 import com.github.ricbau.vendingmachine.persistence.entities.UserRole;
 import io.vavr.control.Either;
-import org.hamcrest.core.Is;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +19,7 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Collections;
 
+import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -36,7 +37,7 @@ class CreateUserControllerTest {
     private ObjectMapper objectMapper;
     @Autowired
     private MockMvc mockMvc;
-    
+
     @Test
     @DisplayName("it should create and return the user id")
     void postCreated() throws Exception {
@@ -47,7 +48,7 @@ class CreateUserControllerTest {
         when(createUserUseCase.create(
                 createUserCommand
         )).thenReturn(Either.right(new User(
-                "44", "user", "passwd", 0,
+                "44", "user", new Password("passwd"), 0,
                 Collections.singleton(UserRole.USER)
         )));
 
@@ -58,8 +59,8 @@ class CreateUserControllerTest {
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(createUserCommand))
                 ).andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", Is.is("44")))
-                .andExpect(jsonPath("$.location", Is.is("http://localhost/users/44")));
+                .andExpect(jsonPath("$.id", is("44")))
+                .andExpect(jsonPath("$.location", is("http://localhost/users/44")));
     }
 
     @Test

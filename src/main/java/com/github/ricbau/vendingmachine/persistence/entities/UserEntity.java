@@ -11,6 +11,7 @@ import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
@@ -33,7 +34,7 @@ public class UserEntity {
     @Column(name = "balance_in_cents")
     private Integer balanceInCents;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "role")
