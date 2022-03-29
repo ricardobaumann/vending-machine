@@ -43,6 +43,7 @@ public class UserCrudPortImpl implements UserCrudPort {
 
     @Override
     public Optional<User> findByID(String id) {
+        log.info("Loading user by ID: {}", id);
         return userRepo.findById(id)
                 .map(userEntityMapper::toUser);
     }
