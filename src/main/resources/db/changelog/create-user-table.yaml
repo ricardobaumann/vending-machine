@@ -54,4 +54,4 @@ databaseChangeLog:
               - column:
                   name: user_id
             indexName: ids_users_roles_user_id
-            tableName: vending_users
+            tableName: users_roles

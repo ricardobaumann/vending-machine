@@ -35,13 +35,17 @@ class PersistProductServiceUpdateTest {
     private PersistProductService persistProductService;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
-    
+
     @Test
     @DisplayName("the input command should be mapped and persisted")
     void update() {
         //Given
         when(productCrudPort.persist(any()))
-                .thenReturn(Try.of(() -> null));
+                .thenReturn(Try.of(() -> new Product(
+                        "333", "test-product",
+                        1, 2, Arrays.asList("seller1", "seller2"),
+                        "user"
+                )));
 
         //When //Then
         assertThat(persistProductService.update(

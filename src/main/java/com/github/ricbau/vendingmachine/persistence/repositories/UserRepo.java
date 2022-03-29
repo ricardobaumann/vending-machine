@@ -1,9 +1,9 @@
 package com.github.ricbau.vendingmachine.persistence.repositories;
 
-import com.github.ricbau.vendingmachine.domain.entities.User;
+import com.github.ricbau.vendingmachine.persistence.entities.UserEntity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepo extends CrudRepository<User, String> {
+public interface UserRepo extends CrudRepository<UserEntity, String> {
 }

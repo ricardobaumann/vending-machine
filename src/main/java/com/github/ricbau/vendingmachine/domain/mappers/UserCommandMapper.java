@@ -8,6 +8,6 @@ import org.mapstruct.Mapping;
 @Mapper(componentModel = "spring")
 public interface UserCommandMapper {
     @Mapping(target = "id", expression = "java(java.util.UUID.randomUUID().toString())")
-    @Mapping(target = "balanceInCents", defaultValue = "0")
+    @Mapping(target = "balanceInCents", constant = "0")
     User toUser(CreateUserCommand createUserCommand);
 }

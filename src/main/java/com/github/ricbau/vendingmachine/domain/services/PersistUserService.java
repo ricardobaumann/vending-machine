@@ -21,7 +21,7 @@ public class PersistUserService implements CreateUserUseCase {
     @Override
     public Either<CreateUserException, User> create(CreateUserCommand createUserCommand) {
         return Try.of(() -> userCommandMapper.toUser(createUserCommand))
-                .andThenTry(userCrudPort::persist)
+                .flatMap(userCrudPort::persist)
                 .toEither()
                 .mapLeft(CreateUserException::new);
 

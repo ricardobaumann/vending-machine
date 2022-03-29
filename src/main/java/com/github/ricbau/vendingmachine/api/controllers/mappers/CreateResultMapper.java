@@ -24,5 +24,6 @@ public interface CreateResultMapper {
                 .toUri();
     }
 
+    @Mapping(target = "location", source = "id")
     WriteResult toResult(User user);
 }
