@@ -42,4 +42,16 @@ public class PersistUserService implements CreateUserUseCase, DeleteUserUseCase 
                 .toEither()
                 .mapLeft(DeleteUserException::new);
     }
+
+    public Try<User> addToBalanceOf(User user, Integer amount) {
+        return userCrudPort.persist(
+                new User(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getBalanceInCents() + amount,
+                        user.getRoles()
+                )
+        );
+    }
 }
