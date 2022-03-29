@@ -2,6 +2,7 @@ package com.github.ricbau.vendingmachine.api.controllers.mappers;
 
 import com.github.ricbau.vendingmachine.api.controllers.results.WriteResult;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
+import com.github.ricbau.vendingmachine.domain.entities.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -23,4 +24,6 @@ public interface CreateResultMapper {
                 .toUri();
     }
 
+    @Mapping(target = "location", source = "id")
+    WriteResult toResult(User user);
 }

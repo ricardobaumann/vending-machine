@@ -39,7 +39,11 @@ class PersistProductServiceCreateTest {
     void create() {
         //Given
         when(productCrudPort.persist(any()))
-                .thenReturn(Try.of(() -> null));
+                .thenReturn(Try.of(() -> new Product(
+                        "333", "test-product",
+                        1, 2, Arrays.asList("seller1", "seller2"),
+                        "user"
+                )));
 
         //When //Then
         assertThat(persistProductService.create(

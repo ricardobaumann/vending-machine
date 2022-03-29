@@ -7,7 +7,7 @@ import io.vavr.control.Try;
 import java.util.Optional;
 
 public interface ProductCrudPort extends ReadProductUseCase {
-    Try<Void> persist(Product product);
+    Try<Product> persist(Product product);
 
     Optional<Product> findByID(String productId);
 

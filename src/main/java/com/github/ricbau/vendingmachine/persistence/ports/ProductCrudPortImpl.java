@@ -21,8 +21,11 @@ public class ProductCrudPortImpl implements ProductCrudPort {
     private final ProductEntityMapper productEntityMapper;
 
     @Override
-    public Try<Void> persist(Product product) {
-        return Try.run(() -> productRepo.save(productEntityMapper.toEntity(product)));
+    public Try<Product> persist(Product product) {
+        return Try.of(() -> {
+            productRepo.save(productEntityMapper.toEntity(product));
+            return product;
+        });
     }
 
     @Override

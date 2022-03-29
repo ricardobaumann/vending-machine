@@ -27,7 +27,7 @@ public class PersistProductService implements CreateProductUseCase,
     @Override
     public Either<CreateProductException, Product> create(CreateProductCommand createProductCommand) {
         return Try.of(() -> productCommandMapper.toProduct(createProductCommand))
-                .andThenTry(productCrudPort::persist)
+                .flatMap(productCrudPort::persist)
                 .toEither()
                 .mapLeft(CreateProductException::new);
     }
@@ -35,7 +35,7 @@ public class PersistProductService implements CreateProductUseCase,
     @Override
     public Either<UpdateProductException, Product> update(UpdateProductCommand updateProductCommand) {
         return Try.of(() -> productCommandMapper.toProduct(updateProductCommand))
-                .andThenTry(productCrudPort::persist)
+                .flatMap(productCrudPort::persist)
                 .toEither()
                 .mapLeft(UpdateProductException::new);
     }
