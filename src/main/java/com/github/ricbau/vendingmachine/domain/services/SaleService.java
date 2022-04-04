@@ -5,6 +5,7 @@ import com.github.ricbau.vendingmachine.domain.commands.DecreaseAmountCommand;
 import com.github.ricbau.vendingmachine.domain.entities.Sale;
 import com.github.ricbau.vendingmachine.domain.exceptions.CreateSaleException;
 import com.github.ricbau.vendingmachine.domain.mappers.SaleCommandMapper;
+import com.github.ricbau.vendingmachine.domain.ports.SaleCrudPort;
 import com.github.ricbau.vendingmachine.domain.usecases.CreateSaleUseCase;
 import io.vavr.control.Either;
 import io.vavr.control.Try;
@@ -19,12 +20,13 @@ public class SaleService implements CreateSaleUseCase {
 
     private final SaleCommandMapper saleCommandMapper;
     private final ProductService productService;
+    private final SaleCrudPort saleCrudPort;
 
     @Override
     public Either<CreateSaleException, Sale> create(CreateSalesCommand createSalesCommand) {
         return Try.of(() -> saleCommandMapper.toSale(createSalesCommand))
                 .andThenTry(this::updateProduct)
-                .andThenTry(this::persist)
+                .flatMap(this::persist)
                 .toEither()
                 .mapLeft(CreateSaleException::new);
     }
@@ -34,7 +36,7 @@ public class SaleService implements CreateSaleUseCase {
                 new DecreaseAmountCommand(sale.getProduct(), sale.getAmount()));
     }
 
-    private void persist(Sale sale) {
-        //TODO persist
+    private Try<Sale> persist(Sale sale) {
+        return saleCrudPort.persist(sale);
     }
 }

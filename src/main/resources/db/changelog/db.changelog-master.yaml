@@ -3,3 +3,5 @@ databaseChangeLog:
       file: db/changelog/create-product-table.yaml
   - include:
       file: db/changelog/create-user-table.yaml
+  - include:
+      file: db/changelog/create-sales-table.yaml
