@@ -17,15 +17,15 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("When a product is being deleted")
 @ExtendWith(MockitoExtension.class)
-class PersistProductServiceDeleteTest {
+class ProductServiceDeleteTest {
 
     @Mock
     private ProductCrudPort productCrudPort;
     @Spy
     private ProductCommandMapperImpl productCommandMapper;
     @InjectMocks
-    private PersistProductService persistProductService;
-    
+    private ProductService productService;
+
     @Test
     @DisplayName("it should be deleted from repository")
     void delete() {
@@ -34,7 +34,7 @@ class PersistProductServiceDeleteTest {
         when(productCrudPort.delete(id))
                 .thenReturn(Try.success(null));
         //When //Then
-        assertThat(persistProductService.delete(id).get())
+        assertThat(productService.delete(id).get())
                 .isNull();
     }
 
@@ -49,7 +49,7 @@ class PersistProductServiceDeleteTest {
                 ));
 
         //When //Then
-        assertThat(persistProductService.delete(id).getLeft())
+        assertThat(productService.delete(id).getLeft())
                 .isInstanceOf(DeleteProductException.class)
                 .hasCauseInstanceOf(RuntimeException.class);
     }
