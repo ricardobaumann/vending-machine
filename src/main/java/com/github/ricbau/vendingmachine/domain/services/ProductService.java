@@ -49,20 +49,21 @@ public class ProductService implements CreateProductUseCase,
                 .mapLeft(DeleteProductException::new);
     }
 
-    void decreaseAmount(DecreaseAmountCommand decreaseAmountCommand) {
+    Try<Product> decreaseAmount(DecreaseAmountCommand decreaseAmountCommand) {
+
         Product product = decreaseAmountCommand.getProduct();
-        if (product.getAmountAvailable() < decreaseAmountCommand.getAmount()) {
-            throw new ProductUnavailableException(product.getProductName());
-        }
-        productCrudPort.persist(
+        return Try.run(() -> {
+            if (product.getAmountAvailable() < decreaseAmountCommand.getAmount()) {
+                throw new ProductUnavailableException(product.getProductName());
+            }
+        }).flatMap(__ -> productCrudPort.persist(
                 new Product(
                         product.getId(),
                         product.getProductName(),
-                        product.getCostInCents(),
                         product.getAmountAvailable() - decreaseAmountCommand.getAmount(),
+                        product.getCostInCents(),
                         product.getSellerIds(),
                         product.getOwner()
-                )
-        );
+                )));
     }
 }

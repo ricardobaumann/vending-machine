@@ -25,15 +25,16 @@ public class SaleService implements CreateSaleUseCase {
     @Override
     public Either<CreateSaleException, Sale> create(CreateSalesCommand createSalesCommand) {
         return Try.of(() -> saleCommandMapper.toSale(createSalesCommand))
-                .andThenTry(this::updateProduct)
+                .flatMap(this::updateProduct)
                 .flatMap(this::persist)
                 .toEither()
                 .mapLeft(CreateSaleException::new);
     }
 
-    private void updateProduct(Sale sale) {
-        productService.decreaseAmount(
-                new DecreaseAmountCommand(sale.getProduct(), sale.getAmount()));
+    private Try<Sale> updateProduct(Sale sale) {
+        return productService.decreaseAmount(
+                        new DecreaseAmountCommand(sale.getProduct(), sale.getAmount()))
+                .map(product -> sale);
     }
 
     private Try<Sale> persist(Sale sale) {
