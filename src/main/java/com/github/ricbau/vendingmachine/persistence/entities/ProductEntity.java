@@ -1,6 +1,7 @@
 package com.github.ricbau.vendingmachine.persistence.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Entity
 @EqualsAndHashCode(of = "id")
 @Table(name = "products")

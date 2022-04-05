@@ -25,14 +25,14 @@ import static org.mockito.Mockito.when;
 
 @DisplayName("When a product is being updated")
 @ExtendWith(MockitoExtension.class)
-class PersistProductServiceUpdateTest {
+class ProductServiceUpdateTest {
 
     @Mock
     private ProductCrudPort productCrudPort;
     @Spy
     private ProductCommandMapperImpl productCommandMapper;
     @InjectMocks
-    private PersistProductService persistProductService;
+    private ProductService productService;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
 
@@ -48,7 +48,7 @@ class PersistProductServiceUpdateTest {
                 )));
 
         //When //Then
-        assertThat(persistProductService.update(
+        assertThat(productService.update(
                 new UpdateProductCommand(
                         new CreateProductCommand(
                                 new CreateProductCommand.WriteProductPayload(

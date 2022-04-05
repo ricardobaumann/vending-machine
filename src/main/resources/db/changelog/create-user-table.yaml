@@ -1,6 +1,6 @@
 databaseChangeLog:
   - changeSet:
-      id: create-zones-tenants-table
+      id: create-user-table
       author: ricardo.baumann
       changes:
         - createTable:

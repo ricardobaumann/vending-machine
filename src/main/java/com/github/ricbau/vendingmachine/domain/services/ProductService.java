@@ -1,10 +1,12 @@
 package com.github.ricbau.vendingmachine.domain.services;
 
 import com.github.ricbau.vendingmachine.domain.commands.CreateProductCommand;
+import com.github.ricbau.vendingmachine.domain.commands.DecreaseAmountCommand;
 import com.github.ricbau.vendingmachine.domain.commands.UpdateProductCommand;
 import com.github.ricbau.vendingmachine.domain.entities.Product;
 import com.github.ricbau.vendingmachine.domain.exceptions.CreateProductException;
 import com.github.ricbau.vendingmachine.domain.exceptions.DeleteProductException;
+import com.github.ricbau.vendingmachine.domain.exceptions.ProductUnavailableException;
 import com.github.ricbau.vendingmachine.domain.exceptions.UpdateProductException;
 import com.github.ricbau.vendingmachine.domain.mappers.ProductCommandMapper;
 import com.github.ricbau.vendingmachine.domain.ports.ProductCrudPort;
@@ -18,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PersistProductService implements CreateProductUseCase,
+public class ProductService implements CreateProductUseCase,
         UpdateProductUseCase, DeleteProductUseCase {
 
     private final ProductCrudPort productCrudPort;
@@ -45,5 +47,23 @@ public class PersistProductService implements CreateProductUseCase,
         return productCrudPort.delete(id)
                 .toEither()
                 .mapLeft(DeleteProductException::new);
+    }
+
+    Try<Product> decreaseAmount(DecreaseAmountCommand decreaseAmountCommand) {
+
+        Product product = decreaseAmountCommand.getProduct();
+        return Try.run(() -> {
+            if (product.getAmountAvailable() < decreaseAmountCommand.getAmount()) {
+                throw new ProductUnavailableException(product.getProductName());
+            }
+        }).flatMap(__ -> productCrudPort.persist(
+                new Product(
+                        product.getId(),
+                        product.getProductName(),
+                        product.getAmountAvailable() - decreaseAmountCommand.getAmount(),
+                        product.getCostInCents(),
+                        product.getSellerIds(),
+                        product.getOwner()
+                )));
     }
 }

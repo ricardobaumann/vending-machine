@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PersistUserService implements CreateUserUseCase, DeleteUserUseCase {
+public class UserService implements CreateUserUseCase, DeleteUserUseCase {
 
     private final UserCrudPort userCrudPort;
     private final UserCommandMapper userCommandMapper;
@@ -41,5 +41,17 @@ public class PersistUserService implements CreateUserUseCase, DeleteUserUseCase 
         return userCrudPort.delete(id)
                 .toEither()
                 .mapLeft(DeleteUserException::new);
+    }
+
+    public Try<User> addToBalanceOf(User user, Integer amount) {
+        return userCrudPort.persist(
+                new User(
+                        user.getId(),
+                        user.getUsername(),
+                        user.getPassword(),
+                        user.getBalanceInCents() + amount,
+                        user.getRoles()
+                )
+        );
     }
 }

@@ -1,0 +1,43 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-sales-table
+      author: ricardo.baumann
+      changes:
+        - createTable:
+            tableName: sales
+            columns:
+              - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                  name: id
+                  type: varchar(100)
+              - column:
+                  constraints:
+                    foreignKeyName: fk_sales_product
+                    references: products(id)
+                    nullable: false
+                  name: product_id
+                  type: varchar(100)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: username
+                  type: varchar(200)
+              - column:
+                  constraints:
+                    nullable: false
+                  name: amount
+                  type: integer
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+            indexName: idx_sales_username
+            tableName: sales
+        - createIndex:
+            columns:
+              - column:
+                  name: product_id
+            indexName: idx_sales_product_id
+            tableName: sales

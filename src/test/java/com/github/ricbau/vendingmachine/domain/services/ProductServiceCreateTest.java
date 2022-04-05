@@ -24,13 +24,13 @@ import static org.mockito.Mockito.*;
 
 @DisplayName("When a product is being created")
 @ExtendWith(MockitoExtension.class)
-class PersistProductServiceCreateTest {
+class ProductServiceCreateTest {
     @Mock
     private ProductCrudPort productCrudPort;
     @Spy
     private ProductCommandMapperImpl productCommandMapper;
     @InjectMocks
-    private PersistProductService persistProductService;
+    private ProductService productService;
     @Captor
     private ArgumentCaptor<Product> productArgumentCaptor;
 
@@ -46,7 +46,7 @@ class PersistProductServiceCreateTest {
                 )));
 
         //When //Then
-        assertThat(persistProductService.create(
+        assertThat(productService.create(
                 new CreateProductCommand(
                         new WriteProductPayload(
                                 "test-product",
@@ -72,7 +72,7 @@ class PersistProductServiceCreateTest {
         doThrow(RuntimeException.class).when(productCrudPort).persist(any());
 
         //When //Then
-        assertThat(persistProductService.create(
+        assertThat(productService.create(
                 new CreateProductCommand(
                         new WriteProductPayload(
                                 "test-product",
