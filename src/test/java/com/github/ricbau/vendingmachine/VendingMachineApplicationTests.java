@@ -9,6 +9,7 @@ import com.github.ricbau.vendingmachine.persistence.entities.UserRole;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpStatus;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,11 +39,16 @@ class VendingMachineApplicationTests {
     private void createSale(String username, String password, String productId, String userId, String productAddress) {
         TestRestTemplate testRestTemplate = new TestRestTemplate(username, password);
 
-        String address = testRestTemplate.postForObject("http://localhost:8080/sales", new CreateSalesCommand(
+        assertThat(testRestTemplate.postForEntity("http://localhost:8080/sales", new CreateSalesCommand(
+                productId, 11, userId
+        ), ObjectNode.class).getStatusCode()).isEqualTo(HttpStatus.CONFLICT);
+
+        testRestTemplate.postForObject("http://localhost:8080/sales", new CreateSalesCommand(
                 productId, 10, userId
-        ), ObjectNode.class).get("location").asText();
-        
-        assertThat(testRestTemplate.getForObject(productAddress, ObjectNode.class).get("amountAvailable").asInt())
+        ), ObjectNode.class);
+
+        assertThat(testRestTemplate.getForObject(productAddress, ObjectNode.class)
+                .get("amountAvailable").asInt())
                 .isZero();
     }
 

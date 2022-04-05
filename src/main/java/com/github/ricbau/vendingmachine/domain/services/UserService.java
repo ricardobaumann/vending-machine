@@ -16,7 +16,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class PersistUserService implements CreateUserUseCase, DeleteUserUseCase {
+public class UserService implements CreateUserUseCase, DeleteUserUseCase {
 
     private final UserCrudPort userCrudPort;
     private final UserCommandMapper userCommandMapper;
